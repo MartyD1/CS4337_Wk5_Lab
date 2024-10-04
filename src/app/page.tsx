@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
-import TaskManager from '../components/taskmanager';
-import Login from '../components/login';
+import TaskManager from './components/taskmanager';
+import Login from './components/login';
 import { useState } from 'react';
+
 
 
 export default function Home() {

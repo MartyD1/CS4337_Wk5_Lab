@@ -1,3 +1,7 @@
+import Appbar from "./components/Appbar";
+import Providers from "./components/Providers";
+
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -25,10 +29,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Providers>
+          <Appbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

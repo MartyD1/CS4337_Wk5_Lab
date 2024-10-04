@@ -1,6 +1,7 @@
 import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
 import { NextRequest, NextResponse } from 'next/server';
 
+
 const sqs = new SQSClient({ region: 'eu-west-1' });
 
 export async function POST(req: NextRequest) {
