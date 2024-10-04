@@ -9,7 +9,7 @@ export default function TaskManager() {
 
   const handleSubmit = async () => {
 
-    const response = await fetch('/api/sendMessage', {
+    const response = await fetch('/api/sendMessageAsync', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,9 +25,9 @@ export default function TaskManager() {
       alert("Failed to send message to SQS");
     }
   };
-  const handleSubmitForDynamo = async () => {
+  const handleSubmitSync = async () => {
 
-    const response = await fetch('/api/sendToDynamo', {
+    const response = await fetch('/api/sendMessageSync', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,9 +38,10 @@ export default function TaskManager() {
     });
 
     if (response.ok) {
-      alert("Entry added to dynamo table");
+      const text = await new Response(response.body).text();
+      alert(text);
     } else {
-      alert("could not add entry to dynamo table");
+      alert("failed to export data");
     }
   };
 
@@ -48,7 +49,7 @@ export default function TaskManager() {
     <div style={styles.wrapper}>
       <div style={styles.containerTwo}>
       <div style={styles.container}>
-        <h1 style={styles.title}>Admin Panel</h1>
+        <h1 style={styles.title}>Export Data Asynchronously:</h1>
 
          <div style={styles.inputGroup}>
           <label style={styles.label}>Message:</label>
@@ -65,10 +66,10 @@ export default function TaskManager() {
         </div>
 
         <div style={styles.container}>
-        <h1 style={styles.title}>DynamoDB</h1>
+        <h1 style={styles.title}>Export Data Synchronously:</h1>
         <div style={styles.inputGroup}>
       
-          <label style={styles.label}>Content for Dynamo Entry:</label>
+          <label style={styles.label}>Message:</label>
           <input
             type="text"
             value={entry}
@@ -77,7 +78,7 @@ export default function TaskManager() {
             style={styles.input}
           />
         </div>
-        <button style={styles.button} onClick={handleSubmitForDynamo}>Send</button>
+        <button style={styles.button} onClick={handleSubmitSync}>Send</button>
         </div>
 
 
