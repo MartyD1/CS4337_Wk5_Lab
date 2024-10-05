@@ -4,6 +4,8 @@ import { CSSProperties } from 'react';
 
 export default function TaskManager() {
   const [message, setMessage] = useState(''); 
+  const [entry, setEntry] = useState('')
+
 
   const handleSubmit = async () => {
 
@@ -23,13 +25,32 @@ export default function TaskManager() {
       alert("Failed to send message to SQS");
     }
   };
+  const handleSubmitForDynamo = async () => {
+
+    const response = await fetch('/api/sendToDynamo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        entryContent: entry, 
+      }),
+    });
+
+    if (response.ok) {
+      alert("Entry added to dynamo table");
+    } else {
+      alert("could not add entry to dynamo table");
+    }
+  };
 
   return (
     <div style={styles.wrapper}>
+      <div style={styles.containerTwo}>
       <div style={styles.container}>
         <h1 style={styles.title}>Admin Panel</h1>
 
-        <div style={styles.inputGroup}>
+         <div style={styles.inputGroup}>
           <label style={styles.label}>Message:</label>
           <input
             type="text"
@@ -38,9 +59,31 @@ export default function TaskManager() {
             placeholder="Enter a message"
             style={styles.input}
           />
+        </div> 
+        
+        <button style={styles.button} onClick={handleSubmit}>Send</button> 
         </div>
-        <button style={styles.button} onClick={handleSubmit}>Send</button>
-      </div>
+
+        <div style={styles.container}>
+        <h1 style={styles.title}>DynamoDB</h1>
+        <div style={styles.inputGroup}>
+      
+          <label style={styles.label}>Content for Dynamo Entry:</label>
+          <input
+            type="text"
+            value={entry}
+            onChange={(e) => setEntry(e.target.value)}
+            placeholder="Enter some text here..."
+            style={styles.input}
+          />
+        </div>
+        <button style={styles.button} onClick={handleSubmitForDynamo}>Send</button>
+        </div>
+
+
+       
+
+        </div>
     </div>
   );
 }
@@ -48,6 +91,7 @@ export default function TaskManager() {
 const styles: { [key: string]: CSSProperties } = {
   wrapper: {
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh', 
@@ -56,13 +100,29 @@ const styles: { [key: string]: CSSProperties } = {
   container: {
     display: 'flex',
     flexDirection: 'column',
+    flexGrow: '1',
     alignItems: 'center',
     padding: '20px',
     backgroundColor: '#f5f5f5',
     borderRadius: '10px',
-    width: '400px',
+    height:'292.2px',
+    width: '200px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   },
+  containerTwo: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    gap: '1em',
+    alignItems: 'center',
+    padding: '20px',
+    backgroundColor: '#f5f5f5',
+    borderRadius: '10px',
+    width: '700px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  },
+  
+
   title: {
     fontSize: '24px',
     fontWeight: 'bold',
