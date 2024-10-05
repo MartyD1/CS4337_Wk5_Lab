@@ -6,9 +6,6 @@ async function sleep(ms: number): Promise<void> {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { entryContent } = body;
-
     console.log("simulating a long process");
     console.log("exporting data...");
 
