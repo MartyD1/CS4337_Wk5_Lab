@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import "@aws-sdk/client-dynamodb";
 
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
